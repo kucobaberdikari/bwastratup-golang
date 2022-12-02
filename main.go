@@ -20,25 +20,16 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
-	// input := user.LoginInput{
-	// 	Email:    "kucobaberdikari@gmail.com",
-	// 	Password: "password",
-	// }
-	// user, err := userService.Login(input)
-	// if err != nil {
-	// 	fmt.Println("Terjadi Kesalahan")
-	// 	fmt.Println(err.Error())
-	// }
-	// fmt.Println(user.Email)
-	// fmt.Println(user.Name)
 
 	userHandler := handler.NewUserHandler(userService)
 
 	router := gin.Default()
+	router.SetTrustedProxies([]string{"192.168.1.2"})
 	api := router.Group("api/v1")
 
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.Login)
+	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 
 	router.Run()
 }
