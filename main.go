@@ -6,7 +6,6 @@ import (
 	"bwastartup/handler"
 	"bwastartup/helper"
 	"bwastartup/user"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -27,28 +26,12 @@ func main() {
 	userRepository := user.NewRepository(db)
 	campaignRepository := campaign.NewRepository(db)
 
-	campaigns, err := campaignRepository.FindByUserID(1)
-
-	fmt.Println("=====")
-	fmt.Println("=====")
-	fmt.Println("=====")
-	fmt.Println("=====")
-	// fmt.Println(len(campaigns))
-	for _, campaign := range campaigns {
-		fmt.Println(campaign.Name)
-		fmt.Println(campaign.UserID)
-		if len(campaign.CampaignImages)> 0{
-			fmt.Println("Jumlah gambar")
-			fmt.Println(len(campaign.CampaignImages))
-			fmt.Println(campaign.CampaignImages[0].FileName)
-		}
-		
-	}
-
 	userService := user.NewService(userRepository)
+	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	router := gin.Default()
 	router.SetTrustedProxies([]string{"192.168.1.2"})
@@ -59,6 +42,7 @@ func main() {
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
 
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 	router.Run()
 }
 
