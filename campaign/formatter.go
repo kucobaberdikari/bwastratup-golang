@@ -32,28 +32,28 @@ func FormatCampaign(campaign Campaign) CampaignFormatter {
 }
 
 func FormatCampaigns(campaigns []Campaign) []CampaignFormatter {
-
 	campaignsFormatter := []CampaignFormatter{}
 
 	for _, campaign := range campaigns {
 		campaignFormatter := FormatCampaign(campaign)
 		campaignsFormatter = append(campaignsFormatter, campaignFormatter)
 	}
+
 	return campaignsFormatter
 }
 
 type CampaignDetailFormatter struct {
-	ID               int      `json:"id"`
-	Name             string   `json:"name"`
-	ShortDescription string   `json:"short_description"`
-	Description      string   `json:"description"`
-	ImageURL         string   `json:"image_url"`
-	GoalAmount       int      `json:"goal_amount"`
-	CurrentAmount    int      `json:"current_amount"`
-	BackerCount      int      `json:"backer_count"`
-	UserID           int      `json:"user_id"`
-	Slug             string   `json:"slug"`
-	Perks            []string `json:"perks"`
+	ID               int                      `json:"id"`
+	Name             string                   `json:"name"`
+	ShortDescription string                   `json:"short_description"`
+	Description      string                   `json:"description"`
+	ImageURL         string                   `json:"image_url"`
+	GoalAmount       int                      `json:"goal_amount"`
+	CurrentAmount    int                      `json:"current_amount"`
+	BackerCount      int                      `json:"backer_count"`
+	UserID           int                      `json:"user_id"`
+	Slug             string                   `json:"slug"`
+	Perks            []string                 `json:"perks"`
 	User             CampaignUserFormatter    `json:"user"`
 	Images           []CampaignImageFormatter `json:"images"`
 }
@@ -90,6 +90,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	for _, perk := range strings.Split(campaign.Perks, ",") {
 		perks = append(perks, strings.TrimSpace(perk))
 	}
+
 	campaignDetailFormatter.Perks = perks
 
 	user := campaign.User
@@ -97,8 +98,9 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	campaignUserFormatter := CampaignUserFormatter{}
 	campaignUserFormatter.Name = user.Name
 	campaignUserFormatter.ImageURL = user.AvatarFileName
+
 	campaignDetailFormatter.User = campaignUserFormatter
-	
+
 	images := []CampaignImageFormatter{}
 
 	for _, image := range campaign.CampaignImages {

@@ -4,7 +4,7 @@ import (
 	"bwastartup/user"
 	"strconv"
 
-	"github.com/veritrans/go-midtrans"
+	midtrans "github.com/veritrans/go-midtrans"
 )
 
 type service struct {
