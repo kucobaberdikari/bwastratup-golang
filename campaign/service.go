@@ -21,7 +21,6 @@ type service struct {
 
 func NewService(repository Repository) *service {
 	return &service{repository}
-
 }
 
 func (s *service) GetCampaigns(userID int) ([]Campaign, error) {
@@ -48,6 +47,7 @@ func (s *service) GetCampaignByID(input GetCampaignDetailInput) (Campaign, error
 	if err != nil {
 		return campaign, err
 	}
+
 	return campaign, nil
 }
 
@@ -67,6 +67,7 @@ func (s *service) CreateCampaign(input CreateCampaignInput) (Campaign, error) {
 	if err != nil {
 		return newCampaign, err
 	}
+
 	return newCampaign, nil
 }
 

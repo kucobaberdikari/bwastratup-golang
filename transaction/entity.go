@@ -19,3 +19,8 @@ type Transaction struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+// func (t Transaction) AmountFormatIDR() string {
+// 	ac := accounting.Accounting{Symbol: "Rp", Precision: 2, Thousand: ".", Decimal: ","}
+// 	return ac.FormatMoney(t.Amount)
+// }

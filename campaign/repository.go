@@ -1,8 +1,6 @@
 package campaign
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type Repository interface {
 	FindAll() ([]Campaign, error)
@@ -48,9 +46,11 @@ func (r *repository) FindByID(ID int) (Campaign, error) {
 	var campaign Campaign
 
 	err := r.db.Preload("User").Preload("CampaignImages").Where("id = ?", ID).Find(&campaign).Error
+
 	if err != nil {
 		return campaign, err
 	}
+
 	return campaign, nil
 }
 
@@ -82,11 +82,12 @@ func (r *repository) CreateImage(campaignImage CampaignImage) (CampaignImage, er
 	return campaignImage, nil
 }
 
-func (r *repository) MarkAllImagesAsNonPrimary(campaignID int) (bool, error){
+func (r *repository) MarkAllImagesAsNonPrimary(campaignID int) (bool, error) {
 	err := r.db.Model(&CampaignImage{}).Where("campaign_id = ?", campaignID).Update("is_primary", false).Error
 
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
 }

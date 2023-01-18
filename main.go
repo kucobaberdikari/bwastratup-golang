@@ -64,7 +64,7 @@ func main() {
 	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateTransaction)
 	api.POST("/transactions/notification", transactionHandler.GetNotification)
 
-	router.Run(":8080")
+	router.Run(":8081")
 }
 
 func authMiddleware(authService auth.Service, userService user.Service) gin.HandlerFunc {
