@@ -44,14 +44,16 @@ func main() {
 	campaignHandler := handler.NewCampaignHandler(campaignService)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
-	userWebHandler := webHandler.NewUserHandler()
+	userWebHandler := webHandler.NewUserHandler(userService)
 
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	router.LoadHTMLGlob("web/templates/**/*")
 	router.HTMLRender = loadTemplates("./web/templates")
 	router.Static("/images", "./images")
+	router.Static("/css", "./web/assets/css")
+	router.Static("/js", "./web/assets/js")
+	router.Static("/webfonts", "./web/assets/webfonts")
 	router.SetTrustedProxies([]string{"192.168.1.2"})
 	api := router.Group("api/v1")
 
@@ -73,6 +75,9 @@ func main() {
 	api.POST("/transactions/notification", transactionHandler.GetNotification)
 
 	router.GET("/users", userWebHandler.Index)
+	router.POST("/users", userWebHandler.Create)
+	router.GET("/users/new", userWebHandler.New)
+	router.GET("/users/edit/:id", userWebHandler.Edit)
 
 	router.Run(":8081")
 }
