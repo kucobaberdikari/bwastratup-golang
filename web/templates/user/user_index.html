@@ -8,9 +8,11 @@
         <table class="table mb-0">
             <thead class="thead-light">
                 <tr>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>email</th>
                     <th>Occupation</th>
+                    <th colspan="2">action</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +23,7 @@
                     <td>{{.Email}}</td>
                     <td>{{.Occupation}}</td>
                     <td><a href="/users/edit/{{ .ID }}"><i class="fa fa-edit"></i></a></td>
+                    <td><a href="/users/avatar/{{ .ID }}"><i class="fa fa-camera"></i></a></td>
                 </tr>
                {{end}}
             </tbody>

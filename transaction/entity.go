@@ -4,6 +4,8 @@ import (
 	"bwastartup/campaign"
 	"bwastartup/user"
 	"time"
+
+	"github.com/leekchan/accounting"
 )
 
 type Transaction struct {
@@ -20,7 +22,7 @@ type Transaction struct {
 	UpdatedAt  time.Time
 }
 
-// func (t Transaction) AmountFormatIDR() string {
-// 	ac := accounting.Accounting{Symbol: "Rp", Precision: 2, Thousand: ".", Decimal: ","}
-// 	return ac.FormatMoney(t.Amount)
-// }
+func (t Transaction) AmountFormatIDR() string {
+	ac := accounting.Accounting{Symbol: "Rp", Precision: 2, Thousand: ".", Decimal: ","}
+	return ac.FormatMoney(t.Amount)
+}
