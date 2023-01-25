@@ -177,3 +177,60 @@ func (h *userHandler) FetchUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+func (h *userHandler) Edit(c *gin.Context) {
+	var input user.GetUserByID
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get user detail", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	UserDetail, err := h.userService.GetUserDetail(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of user", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	formatter := user.FormatUserDetail(UserDetail)
+
+	response := helper.APIResponse("User detail", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (h *userHandler) UpdateUser(c *gin.Context) {
+	var input user.GetUserByID
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to update user ", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	var inputData user.FormUpdateUserInput
+
+	err = c.ShouldBindJSON(&inputData)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Failed to update user", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	formatter, err := h.userService.UpdateUserData(input, inputData)
+	if err != nil {
+		response := helper.APIResponse("Failed to update user", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Success to update user", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
+
+}

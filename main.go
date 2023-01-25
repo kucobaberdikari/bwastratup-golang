@@ -65,11 +65,13 @@ func main() {
 	router.SetTrustedProxies([]string{"192.168.1.2"})
 	api := router.Group("api/v1")
 
-	api.POST("/users", userHandler.RegisterUser)
+	api.POST("/register", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
 	api.GET("/users/fetch", authMiddleware(authService, userService), userHandler.FetchUser)
+	api.GET("/user/detail/:id", authMiddleware(authService, userService), userHandler.Edit)
+	api.POST("/user/update/:id", authMiddleware(authService, userService), userHandler.UpdateUser)
 
 	api.GET("/campaigns", campaignHandler.GetCampaigns)
 	api.GET("/campaigns/:id", campaignHandler.GetCampaign)

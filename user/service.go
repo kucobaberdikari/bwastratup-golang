@@ -14,6 +14,8 @@ type Service interface {
 	GetUserByID(ID int) (User, error)
 	GetAllUsers() ([]User, error)
 	UpdateUser(input FormUpdateUserInput) (User, error)
+	GetUserDetail(input GetUserByID) (User, error)
+	UpdateUserData(input GetUserByID, inputData FormUpdateUserInput) (User, error)
 }
 
 type service struct {
@@ -55,7 +57,7 @@ func (s *service) Login(input LoginInput) (User, error) {
 	}
 
 	if user.ID == 0 {
-		return user, errors.New("No User Found")
+		return user, errors.New("No user found")
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 	if err != nil {
@@ -124,6 +126,37 @@ func (s *service) UpdateUser(input FormUpdateUserInput) (User, error) {
 	user.Name = input.Name
 	user.Email = input.Email
 	user.Occupation = input.Occupation
+
+	updatedUser, err := s.repository.Update(user)
+	if err != nil {
+		return updatedUser, err
+	}
+
+	return updatedUser, nil
+}
+
+func (s *service) GetUserDetail(input GetUserByID) (User, error) {
+	user, err := s.repository.FindByID(input.ID)
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("No user found")
+	}
+
+	return user, nil
+}
+
+func (s *service) UpdateUserData(input GetUserByID, inputData FormUpdateUserInput) (User, error) {
+	user, err := s.repository.FindByID(input.ID)
+	if err != nil {
+		return user, err
+	}
+	user.ID = input.ID
+	user.Name = inputData.Name
+	user.Email = inputData.Email
+	user.Occupation = inputData.Occupation
 
 	updatedUser, err := s.repository.Update(user)
 	if err != nil {
