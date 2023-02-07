@@ -190,11 +190,11 @@ func (h *userHandler) Edit(c *gin.Context) {
 
 	UserDetail, err := h.userService.GetUserDetail(input)
 	if err != nil {
-		response := helper.APIResponse("Failed to get detail of user", http.StatusBadRequest, "error", nil)
+		response := helper.APIResponse("Failed to edit user", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	formatter := user.FormatUserDetail(UserDetail)
+	formatter := user.FormatUserEdit(UserDetail)
 
 	response := helper.APIResponse("User detail", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
@@ -231,6 +231,29 @@ func (h *userHandler) UpdateUser(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("Success to update user", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (h *userHandler) DetailUser(c *gin.Context) {
+	var input user.GetUserByID
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get user detail", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	UserDetail, err := h.userService.GetUserDetail(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of user", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	formatter := user.FormatUserDetail(UserDetail)
+
+	response := helper.APIResponse("User detail", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 
 }

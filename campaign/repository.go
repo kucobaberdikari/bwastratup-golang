@@ -10,6 +10,7 @@ type Repository interface {
 	Update(campaign Campaign) (Campaign, error)
 	CreateImage(campaignImage CampaignImage) (CampaignImage, error)
 	MarkAllImagesAsNonPrimary(campaignID int) (bool, error)
+	DeleteImage(ID int) (CampaignImage, error)
 }
 
 type repository struct {
@@ -83,11 +84,20 @@ func (r *repository) CreateImage(campaignImage CampaignImage) (CampaignImage, er
 }
 
 func (r *repository) MarkAllImagesAsNonPrimary(campaignID int) (bool, error) {
-	err := r.db.Model(&CampaignImage{}).Where("campaign_id = ?", campaignID).Update("is_primary", false).Error
+	err := r.db.Model(&CampaignImage{}).Update("is_primary", false).Error
 
 	if err != nil {
 		return false, err
 	}
 
 	return true, nil
+}
+
+func (r *repository) DeleteImage(ID int) (CampaignImage, error) {
+	var campaignImage CampaignImage
+	err := r.db.Where("id = ?", ID).Find(&campaignImage).Delete(&campaignImage).Error
+	if err != nil {
+		return campaignImage, err
+	}
+	return campaignImage, nil
 }

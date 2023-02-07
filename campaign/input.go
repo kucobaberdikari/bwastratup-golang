@@ -16,6 +16,7 @@ type CreateCampaignInput struct {
 }
 
 type CreateCampaignImageInput struct {
+	// ID         int  `json:"image_id"`
 	CampaignID int  `form:"campaign_id" binding:"required"`
 	IsPrimary  bool `form:"is_primary"`
 	User       user.User

@@ -170,3 +170,27 @@ func (h *campaignHandler) UploadImage(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *campaignHandler) DeleteImage(c *gin.Context) {
+	var input campaign.GetCampaignDetailInput
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Failed to delete campaign image", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	deleteimage, err := h.service.DeleteImage(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to delete campaign image", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	response := helper.APIResponse("Image has been deleted", http.StatusOK, "success", deleteimage)
+	c.JSON(http.StatusOK, response)
+
+}

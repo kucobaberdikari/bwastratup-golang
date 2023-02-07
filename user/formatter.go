@@ -28,6 +28,17 @@ func FormatUserDetail(user User) UserFormatter {
 		ID:          user.ID,
 		Name:        user.Name,
 		Occupation:  user.Occupation,
+		Description: user.Description,
+		ImageURL:    user.AvatarFileName,
+	}
+	return formatter
+}
+
+func FormatUserEdit(user User) UserFormatter {
+	formatter := UserFormatter{
+		ID:          user.ID,
+		Name:        user.Name,
+		Occupation:  user.Occupation,
 		Email:       user.Email,
 		Description: user.Description,
 		ImageURL:    user.AvatarFileName,

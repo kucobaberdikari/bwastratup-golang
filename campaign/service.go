@@ -13,6 +13,7 @@ type Service interface {
 	CreateCampaign(input CreateCampaignInput) (Campaign, error)
 	UpdateCampaign(inputID GetCampaignDetailInput, inputData CreateCampaignInput) (Campaign, error)
 	SaveCampaignImage(input CreateCampaignImageInput, fileLocation string) (CampaignImage, error)
+	DeleteImage(input GetCampaignDetailInput) (CampaignImage, error)
 }
 
 type service struct {
@@ -126,4 +127,14 @@ func (s *service) SaveCampaignImage(input CreateCampaignImageInput, fileLocation
 	}
 
 	return newCampaignImage, nil
+}
+
+func (s *service) DeleteImage(input GetCampaignDetailInput) (CampaignImage, error) {
+	campaignImage, err := s.repository.DeleteImage(input.ID)
+
+	if err != nil {
+		return campaignImage, err
+	}
+
+	return campaignImage, nil
 }

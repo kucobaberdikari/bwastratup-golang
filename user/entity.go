@@ -10,6 +10,8 @@ type User struct {
 	PasswordHash   string
 	AvatarFileName string
 	Description    string
+	PhoneNumber    string
+	city           string
 	Role           string
 	CreatedAt      time.Time
 	UpdatedAt      time.Time

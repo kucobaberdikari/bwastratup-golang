@@ -59,11 +59,14 @@ type CampaignDetailFormatter struct {
 }
 
 type CampaignUserFormatter struct {
-	Name     string `json:"name"`
-	ImageURL string `json:"image_url"`
+	ID          int
+	Name        string `json:"name"`
+	ImageURL    string `json:"image_url"`
+	Description string `json:"description"`
 }
 
 type CampaignImageFormatter struct {
+	ID        int    `json:"id"`
 	ImageURL  string `json:"image_url"`
 	IsPrimary bool   `json:"is_primary"`
 }
@@ -96,8 +99,10 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	user := campaign.User
 
 	campaignUserFormatter := CampaignUserFormatter{}
+	campaignUserFormatter.ID = user.ID
 	campaignUserFormatter.Name = user.Name
 	campaignUserFormatter.ImageURL = user.AvatarFileName
+	campaignUserFormatter.Description = user.Description
 
 	campaignDetailFormatter.User = campaignUserFormatter
 
@@ -106,6 +111,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	for _, image := range campaign.CampaignImages {
 		campaignImageFormatter := CampaignImageFormatter{}
 		campaignImageFormatter.ImageURL = image.FileName
+		campaignImageFormatter.ID = image.ID
 
 		isPrimary := false
 
@@ -121,3 +127,5 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 
 	return campaignDetailFormatter
 }
+
+//user campaigns
