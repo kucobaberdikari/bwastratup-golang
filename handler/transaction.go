@@ -57,6 +57,27 @@ func (h *transactionHandler) GetUserTransactions(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h *transactionHandler) GetTransactionByID(c *gin.Context) {
+	var input transaction.GetTransactionID
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of transaction", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	transactions, err := h.service.GetTransactionByID(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of transaction", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Transaction detail", http.StatusOK, "success", transaction.FormatTransactionDetail(transactions))
+	c.JSON(http.StatusOK, response)
+}
+
 func (h *transactionHandler) CreateTransaction(c *gin.Context) {
 	var input transaction.CreateTransactionInput
 

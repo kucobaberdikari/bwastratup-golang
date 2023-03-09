@@ -19,6 +19,7 @@ type Campaign struct {
 	GoalAmount       int
 	CurrentAmount    int
 	Slug             string
+	EndPoint         time.Time
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	CampaignImages   []CampaignImage

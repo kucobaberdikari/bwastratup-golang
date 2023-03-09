@@ -1,6 +1,8 @@
 package transaction
 
-import "bwastartup/user"
+import (
+	"bwastartup/user"
+)
 
 type GetCampaignTransactionsInput struct {
 	ID   int `uri:"id" binding:"required"`
@@ -18,4 +20,8 @@ type TransactionNotificationInput struct {
 	OrderID           string `json:"order_id"`
 	PaymentType       string `json:"payment_type"`
 	FraudStatus       string `json:"fraud_status"`
+}
+
+type GetTransactionID struct {
+	ID int `uri:"id" binding:"required"`
 }

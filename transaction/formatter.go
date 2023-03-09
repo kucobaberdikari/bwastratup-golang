@@ -104,3 +104,23 @@ func FormatTransaction(transaction Transaction) TransactionFormatter {
 	formatter.PaymentURL = transaction.PaymentURL
 	return formatter
 }
+
+func FormatTransactionDetail(transaction Transaction) UserTransactionFormatter {
+	formatter := UserTransactionFormatter{}
+	formatter.ID = transaction.ID
+	formatter.Amount = transaction.Amount
+	formatter.Status = transaction.Status
+	formatter.CreatedAt = transaction.CreatedAt
+
+	campaignFormatter := CampaignFormatter{}
+	campaignFormatter.Name = transaction.Campaign.Name
+	campaignFormatter.ImageURL = ""
+
+	if len(transaction.Campaign.CampaignImages) > 0 {
+		campaignFormatter.ImageURL = transaction.Campaign.CampaignImages[0].FileName
+	}
+
+	formatter.Campaign = campaignFormatter
+
+	return formatter
+}

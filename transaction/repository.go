@@ -10,6 +10,7 @@ type Repository interface {
 	GetByCampaignID(campaignID int) ([]Transaction, error)
 	GetByUserID(userID int) ([]Transaction, error)
 	GetByID(ID int) (Transaction, error)
+	GetTransactionID(ID int) (Transaction, error)
 	Save(transaction Transaction) (Transaction, error)
 	Update(transaction Transaction) (Transaction, error)
 	FindAll() ([]Transaction, error)
@@ -45,6 +46,18 @@ func (r *repository) GetByID(ID int) (Transaction, error) {
 	var transaction Transaction
 
 	err := r.db.Where("id = ?", ID).Find(&transaction).Error
+
+	if err != nil {
+		return transaction, err
+	}
+
+	return transaction, nil
+}
+
+func (r *repository) GetTransactionID(ID int) (Transaction, error) {
+	var transaction Transaction
+
+	err := r.db.Preload("Campaign.CampaignImages", "campaign_images.is_primary = 1").Where("id = ?", ID).Find(&transaction).Error
 
 	if err != nil {
 		return transaction, err

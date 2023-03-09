@@ -1,16 +1,20 @@
 package campaign
 
-import "strings"
+import (
+	"strings"
+	"time"
+)
 
 type CampaignFormatter struct {
-	ID               int    `json:"id"`
-	UserID           int    `json:"user_id"`
-	Name             string `json:"name"`
-	ShortDescription string `json:"short_description"`
-	ImageURL         string `json:"image_url"`
-	GoalAmount       int    `json:"goal_amount"`
-	CurrentAmount    int    `json:"current_amount"`
-	Slug             string `json:"slug"`
+	ID               int       `json:"id"`
+	UserID           int       `json:"user_id"`
+	Name             string    `json:"name"`
+	ShortDescription string    `json:"short_description"`
+	ImageURL         string    `json:"image_url"`
+	GoalAmount       int       `json:"goal_amount"`
+	CurrentAmount    int       `json:"current_amount"`
+	Slug             string    `json:"slug"`
+	EndPoint         time.Time `json:"end_point"`
 }
 
 func FormatCampaign(campaign Campaign) CampaignFormatter {
@@ -22,6 +26,7 @@ func FormatCampaign(campaign Campaign) CampaignFormatter {
 	campaignFormatter.GoalAmount = campaign.GoalAmount
 	campaignFormatter.CurrentAmount = campaign.CurrentAmount
 	campaignFormatter.Slug = campaign.Slug
+	campaignFormatter.EndPoint = campaign.EndPoint
 	campaignFormatter.ImageURL = ""
 
 	if len(campaign.CampaignImages) > 0 {
@@ -53,6 +58,7 @@ type CampaignDetailFormatter struct {
 	BackerCount      int                      `json:"backer_count"`
 	UserID           int                      `json:"user_id"`
 	Slug             string                   `json:"slug"`
+	EndPoint         time.Time                `json:"end_point"`
 	Perks            []string                 `json:"perks"`
 	User             CampaignUserFormatter    `json:"user"`
 	Images           []CampaignImageFormatter `json:"images"`
@@ -82,6 +88,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	campaignDetailFormatter.BackerCount = campaign.BackerCount
 	campaignDetailFormatter.UserID = campaign.UserID
 	campaignDetailFormatter.Slug = campaign.Slug
+	campaignDetailFormatter.EndPoint = campaign.EndPoint
 	campaignDetailFormatter.ImageURL = ""
 
 	if len(campaign.CampaignImages) > 0 {
@@ -127,5 +134,3 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 
 	return campaignDetailFormatter
 }
-
-//user campaigns

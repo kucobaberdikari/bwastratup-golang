@@ -81,6 +81,7 @@ func main() {
 	api.DELETE("/campaigns/image/:id", authMiddleware(authService, userService), campaignHandler.DeleteImage)
 
 	api.GET("/campaigns/:id/transactions", authMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
+	api.GET("/transactions/:id", authMiddleware(authService, userService), transactionHandler.GetTransactionByID)
 	api.GET("/transactions", authMiddleware(authService, userService), transactionHandler.GetUserTransactions)
 	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateTransaction)
 	api.POST("/transactions/notification", transactionHandler.GetNotification)
